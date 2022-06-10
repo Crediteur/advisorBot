@@ -16,6 +16,8 @@ class OrderBook{
 
         // returns vector of OrderBookEntry filtered by passed parameters
         std::vector<OrderBookEntry> getOrders(OrderBookType type, std::string product, std::string timestamp);
+        std::vector<OrderBookEntry> getOrders(OrderBookType type, std::string product);
+
 
         std::string getEarlistTime();
 
@@ -23,7 +25,7 @@ class OrderBook{
         std::string getNextTime(std::string timestamp);
         int timestep = 1;
 
-        // TODO:: std::string getPrevTime(std::string timestamp);
+        /** TODO:: std::string getPrevTime(std::string timestamp); */
 
         // takes a vector of OrderBookEntry and returns highest/lowest prices in the set
         static double getHighPrice(std::vector<OrderBookEntry>& orders);

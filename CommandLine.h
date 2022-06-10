@@ -20,14 +20,13 @@ class CommandLine{
         void prod(std::vector<std::string>& products);
         void min(std::string& product, std::string& type, std::vector<OrderBookEntry>& filteredOrders);
         void max(std::string& product, std::string& type, std::vector<OrderBookEntry>& filteredOrders);
-        void avg();
-        void predict();
+        void avg(std::string& product, std::string& type, std::string& steps, double& average);
+        void predict(std::string& minmax, std::string& product, std::string& type, std::string& steps, double& average);
         void time(std::string& currentTime,  int& timestep);
         void step(std::string& currentTime, int& timestep);
         //void customCommand();
 
     private:
-        void avgAlgo();
-        void predictAlgo();
+        
 
 };
