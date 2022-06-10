@@ -15,7 +15,6 @@ std::vector<std::string> OrderBook::getKnownProducts(){
 
     std::vector<std::string> products;
     std::map<std::string, bool> prodMap;
-
     // map each entry product type to true, as method to filter
     for (OrderBookEntry& e : orders){
         prodMap[e.product] = true;
@@ -34,6 +33,19 @@ std::vector<OrderBookEntry> OrderBook::getOrders(OrderBookType type, std::string
 
     for (OrderBookEntry& e: orders){
         if (e.orderType == type && e.product == product && e.timestamp == timestamp){
+            orders_sub.push_back(e);
+        }
+    }
+    return orders_sub;
+}
+
+// returns vector of OrderBookEntry filtered by passed parameters (no timestamp filter)
+std::vector<OrderBookEntry> OrderBook::getOrders(OrderBookType type, std::string product){
+
+    std::vector<OrderBookEntry> orders_sub;
+
+    for (OrderBookEntry& e: orders){
+        if (e.orderType == type && e.product == product){
             orders_sub.push_back(e);
         }
     }

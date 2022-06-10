@@ -1,3 +1,5 @@
+#include <thread>         // std::this_thread::sleep_for
+#include <chrono>         // std::chrono::seconds/milliseconds [DO NOT USE PERIODS]
 #include <string>
 #include <vector>
 #include <algorithm>
@@ -86,14 +88,18 @@ void CommandLine::max(std::string& product, std::string& type, std::vector<Order
     // std::cout << "CommandLine::max" << std::endl;
 }
 
-void CommandLine::avg(){
-    // avg is simple moving avg over timesteps ([E1+E2..+En] / n)
+void CommandLine::avg(std::string& product, std::string& type, std::string& steps, double& average){
+    // avg is simple moving avg over timesteps ([F1+F2..+Fn] / n)
     // Common moving average lengths are 10, 20, 50, 100, and 200
-    std::cout << "CommandLine::avg" << std::endl;
+    std::cout << "The average " << product << " " << type << 
+    " price over the last " << steps << " steps was: " << average << std::endl;
+    //std::cout << "CommandLine::avg" << std::endl;
 }
-void CommandLine::predict(){
+void CommandLine::predict(std::string& minmax, std::string& product, std::string& type, std::string& steps, double& average){
     // predicts the max/min bid/ask for the next time step using the moving avg (10?)
     // max/min will loook at the orders higher/lower than the average and predict the next max/min step
+    std::cout << "The " << minmax << " price of " << product << " " << type << 
+    " price over the last " << steps << " steps is predicted to be: " << average << std::endl;
     std::cout << "CommandLine::predict" << std::endl;
 }
 
@@ -107,13 +113,12 @@ void CommandLine::time(std::string& currentTime, int& timestep){
 // move to next time step, total: 2147 steps in 20200601.csv
 void CommandLine::step(std::string& currentTime, int& timestep){
     
-    std::cout << "Now at " << currentTime << ", Step: " << timestep << std::endl;
+    std::cout << "Going to next time frame... \n";
+    std::this_thread::sleep_for (std::chrono::seconds(1));
+    std::cout << "Moved to new: " << currentTime << ", Step: " << timestep << std::endl;
     // std::cout << "CommandLine::step" << std::endl;
 }
 
 // void CommandLine::customCommand(){
 //     std::cout << "CommandLine::step" << std::endl;
 // }
-
-void avgAlgo();
-void predictAlgo();
