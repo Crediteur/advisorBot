@@ -15,17 +15,11 @@ MerkelMain::MerkelMain(){}
 void MerkelMain::init(){
 
     currentTime = orderBook.getEarlistTime();
-    /** TODO: link MerkelMain -> CommandLine -> orderBook
-        to move orderBook usage into seperate functions in CommandLine class
-        userInput and currentTime will have to be moved into CommandLine*/
-
-    commandLine.commands = {"help", "cmd", "avg", "prod", "min", "max", "avg",
-                            "predict", "time", "step", "devi", "exit"};
     
     // welcome message
     std::cout << "Current time: " << currentTime << std::endl;
     std::this_thread::sleep_for (std::chrono::seconds(1));
-    std::cout << "Welcome to advisorBot! Explore the latest cryptocurrency market trends here!" << std::endl;
+    std::cout << "\nWelcome to advisorBot! Explore the latest cryptocurrency market trends here!" << std::endl;
 
     // loop of parsing input and main menu
     while (loopStatus){
@@ -39,7 +33,7 @@ void MerkelMain::init(){
 void MerkelMain::printMenu(){
     
     std::this_thread::sleep_for (std::chrono::seconds(1));
-    std::cout << "\nPlease enter a command, or \"help\" for a list of commands" << std::endl;
+    std::cout << "\nEnter a command, or \"help\" for a list of commands" << std::endl;
 }
 
 //get user input by parsing line, does a quick string check
@@ -301,7 +295,7 @@ bool MerkelMain::moveStep(int steps = 1){
     }
     return true;
 }
-bool MerkelMain::moveStep(std::string steps = "1"){
+bool MerkelMain::moveStep(std::string& steps){
     
     int intSteps;
     try{
@@ -324,7 +318,7 @@ bool MerkelMain::moveStep(std::string steps = "1"){
 }
 
 // gets filtered orders by parameter, calculates the sum over each time step and then returns the average
-double MerkelMain::avgAlgo(std::string product, OrderBookType type, int stepCount){
+double MerkelMain::avgAlgo(std::string& product, OrderBookType& type, int stepCount){
 
     double stepSum;
     double totalAvg = 0;
@@ -334,7 +328,7 @@ double MerkelMain::avgAlgo(std::string product, OrderBookType type, int stepCoun
         stepSum = 0;
         std::vector<OrderBookEntry> filteredOrders = orderBook.getOrders(type, product, currentTime);
         
-        for (OrderBookEntry& e : filteredOrders){
+        for (const OrderBookEntry& e : filteredOrders){
             stepSum += e.price;
         }
         totalAvg += stepSum / filteredOrders.size();
@@ -346,7 +340,7 @@ double MerkelMain::avgAlgo(std::string product, OrderBookType type, int stepCoun
 }
 
 // calculate the average of max/min bid/ask over a fixed or optional time frame
-double MerkelMain::predictAlgo(std::string maxMin, std::string product, OrderBookType type){
+double MerkelMain::predictAlgo(std::string& maxMin, std::string& product, OrderBookType& type){
 
     int stepCount = 10;
     double totalSum = 0;
@@ -375,7 +369,7 @@ double MerkelMain::predictAlgo(std::string maxMin, std::string product, OrderBoo
 }
 
 // predict algo with optional parameter *<step>
-double MerkelMain::predictAlgo(std::string maxMin, std::string product, OrderBookType type, int timeSteps){
+double MerkelMain::predictAlgo(std::string& maxMin, std::string& product, OrderBookType& type, int timeSteps){
 
     double totalSum = 0;   
     if (maxMin == "max"){
@@ -402,7 +396,7 @@ double MerkelMain::predictAlgo(std::string maxMin, std::string product, OrderBoo
 }
 
 // calculates standard deviation of current and last 10 frames
-std::pair<double, double> MerkelMain::standardDevi(std::string product, OrderBookType type){
+std::pair<double, double> MerkelMain::standardDevi(std::string& product, OrderBookType& type){
 
     // stepMean and total track calculation of individual points along each time frame
     int stepCount = 10;
@@ -415,7 +409,7 @@ std::pair<double, double> MerkelMain::standardDevi(std::string product, OrderBoo
     for (int i = 0; i < stepCount; ++i){
         muStep = 0;
         std::vector<OrderBookEntry> filteredOrders = orderBook.getOrders(type, product, currentTime);
-        for (OrderBookEntry& e : filteredOrders){
+        for (const OrderBookEntry& e : filteredOrders){
             muStep += e.price;
         }
         muTotal += muStep / filteredOrders.size();
@@ -433,12 +427,12 @@ std::pair<double, double> MerkelMain::standardDevi(std::string product, OrderBoo
     double currentTotal = 0;
     double currentMu = 0;
     std::vector<OrderBookEntry> currentOrders = orderBook.getOrders(type, product, currentTime);
-    for (OrderBookEntry& e: currentOrders){
+    for (const OrderBookEntry& e: currentOrders){
         currentMu += e.price;
     }
     currentMu = currentMu / currentOrders.size();
 
-    for (OrderBookEntry& e: currentOrders){
+    for (const OrderBookEntry& e: currentOrders){
         currentTotal += pow(e.price - currentMu, 2);
     }
     currentTotal = sqrt (currentTotal / currentOrders.size());

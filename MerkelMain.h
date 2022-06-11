@@ -25,17 +25,17 @@ class MerkelMain{
 
         // move timeframe specified amount, returns true if successful
         bool moveStep(int steps);
-        bool moveStep(std::string steps);
+        bool moveStep(std::string& steps);
 
         // gets filtered orders by parameter, calculates the sum over each time step and then returns the average
-        double avgAlgo(std::string product, OrderBookType type, int stepCount);
+        double avgAlgo(std::string& product, OrderBookType& type, int stepCount);
 
         // calculate the average of max/min bid/ask over a fixed or optional time frame
-        double predictAlgo(std::string maxMin, std::string product, OrderBookType type);
-        double predictAlgo(std::string maxMin, std::string product, OrderBookType type, int stepCount);
+        double predictAlgo(std::string& maxMin, std::string& product, OrderBookType& type);
+        double predictAlgo(std::string& maxMin, std::string& product, OrderBookType& type, int stepCount);
         
         // calculates standard deviation of current and last 10 frames
-        std::pair<double, double> standardDevi(std::string product, OrderBookType type);
+        std::pair<double, double> standardDevi(std::string& product, OrderBookType& type);
 
         // commandLine logic and msgs
         CommandLine commandLine;

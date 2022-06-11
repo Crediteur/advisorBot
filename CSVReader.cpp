@@ -2,6 +2,8 @@
 #include <string>
 #include <iostream>
 #include <fstream>
+#include <chrono>
+#include <thread>
 
 #include "CSVReader.h"
 #include "OrderBookEntry.h"
@@ -18,6 +20,13 @@ std::vector<OrderBookEntry> CSVReader::readCSV(std::string csvFilename){
     std::string line;
     int count {0};
 
+    //performance testing reading lines from CSV
+    using std::chrono::high_resolution_clock;
+    using std::chrono::duration_cast;
+    using std::chrono::duration;
+    using std::chrono::milliseconds;
+
+    auto t1 = high_resolution_clock::now();
     if (csvFile.is_open()){
         
         std::cout << csvFilename << " is open" << std::endl;
@@ -26,9 +35,9 @@ std::vector<OrderBookEntry> CSVReader::readCSV(std::string csvFilename){
         while (std::getline(csvFile, line)){
             
             ++count;
-
             //skip blank lines
             if (line == ""){ 
+                std::cout << "CSVReader::readCSV: ignored blank line on " << count << std::endl;
                 continue;
             }
 
@@ -42,15 +51,18 @@ std::vector<OrderBookEntry> CSVReader::readCSV(std::string csvFilename){
             }
         }//end while
     }//end if
-
-    std::cout << "Successfully read " << entries.size() << " lines from " << csvFilename << std::endl;
+    auto t2 = high_resolution_clock::now();
+    duration<double, std::milli> ms_double = t2 - t1;
+    
+    std::cout << "Successfully read " << entries.size() << " lines from "
+     << csvFilename << " in " << ms_double.count()/1000 <<" seconds"<< std::endl;
     csvFile.close();
 
     return entries;
 }
 
 // parse a string sentence on char into a vector of strings
-std::vector<std::string> CSVReader::tokenise(std::string csvLine, char separator){
+std::vector<std::string> CSVReader::tokenise(std::string& csvLine, char separator){
 
     std::vector<std::string> tokens{};
     std::string token{};

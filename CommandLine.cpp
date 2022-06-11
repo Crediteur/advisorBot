@@ -12,7 +12,7 @@
 CommandLine::CommandLine(){}
 
 // returns true if string matches a command from the commands list
-bool CommandLine::commandExists(std::string str){
+bool CommandLine::commandExists (const std::string str){
     return std::find(commands.begin(), commands.end(),str) !=commands.end();
 }
 
@@ -134,3 +134,7 @@ void CommandLine::exit(){
     std::this_thread::sleep_for (std::chrono::seconds(1));
     std::cout << "Thank you for using advisorBot. Goodbye!" << std::endl;
 }
+
+/** TODO: refractor code: link MerkelMain -> CommandLine -> orderBook
+        to move orderBook usage into seperate functions in CommandLine class
+        userInput and currentTime will have to be moved into CommandLine*/

@@ -9,11 +9,9 @@ class CommandLine{
     public:
         CommandLine();
         
-        // stores all recognized string words checked during input
-        std::vector<std::string> commands{};
 
         // if string exists in commands, return true
-        bool commandExists(std::string str);
+        bool commandExists (const std::string str);
 
         // main print functions of advisorBot, redirected from MerkelMain
         void help();
@@ -29,6 +27,10 @@ class CommandLine{
         void exit();
 
     private:
+        // stores all recognized string words checked during input
+        const std::vector<std::string> commands = {"help", "cmd", "avg", "prod",
+                                                   "min", "max", "avg", "predict",
+                                                   "time", "step", "devi", "exit"};;
         
 
 };

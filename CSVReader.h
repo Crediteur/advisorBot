@@ -12,7 +12,7 @@ class CSVReader{
         static std::vector<OrderBookEntry> readCSV(std::string csvFilename);
 
         // parse a string sentence on char into a vector of strings
-        static std::vector<std::string> tokenise(std::string csvLine, char separator);
+        static std::vector<std::string> tokenise(std::string& csvLine, char separator);
     
     private:
         // converts tokenised (vector of strings) into an OrderBookEntry 
