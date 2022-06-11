@@ -21,7 +21,7 @@ class CommandLine{
         void max(std::string& product, std::string& type, std::vector<OrderBookEntry>& filteredOrders);
         void avg(std::string& product, std::string& type, std::string& steps, double& average);
         void predict(std::string& minmax, std::string& product, std::string& type, std::string& steps, double& average);
-        void time(std::string& currentTime,  int& timestep);
+        void time(std::string& currentTime,  int& timestep, int& csvline);
         void step(std::string& currentTime, int& timestep);
         void devi(std::string& product, std::string& type, std::pair<double, double> deviationPair);
         void exit();

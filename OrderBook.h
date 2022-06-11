@@ -24,6 +24,7 @@ class OrderBook{
         // moves to next time frame, also increments timestep var
         std::string getNextTime(std::string timestamp);
         int timestep = 1;
+        int csvline = 1;
 
         /** TODO:: std::string getPrevTime(std::string timestamp); */
 

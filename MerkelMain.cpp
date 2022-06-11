@@ -18,7 +18,7 @@ void MerkelMain::init(){
     
     // welcome message
     std::cout << "Current time: " << currentTime << std::endl;
-    std::this_thread::sleep_for (std::chrono::seconds(1));
+    std::this_thread::sleep_for (std::chrono::milliseconds(800));
     std::cout << "\nWelcome to advisorBot! Explore the latest cryptocurrency market trends here!" << std::endl;
 
     // loop of parsing input and main menu
@@ -32,7 +32,7 @@ void MerkelMain::init(){
 
 void MerkelMain::printMenu(){
     
-    std::this_thread::sleep_for (std::chrono::seconds(1));
+        std::this_thread::sleep_for (std::chrono::milliseconds(800));
     std::cout << "\nEnter a command, or \"help\" for a list of commands" << std::endl;
 }
 
@@ -228,7 +228,11 @@ void MerkelMain::processUserOption(){
         commandLine.predict(userInput.at(1), userInput.at(2), userInput.at(3), stepString, averagePredict);
     }
     
-    else if (userInput.at(0) == "time"){ commandLine.time(currentTime, orderBook.timestep); }
+    else if (userInput.at(0) == "time"){ 
+        std::cout << "line: " << orderBook.csvline << std::endl; 
+        
+        commandLine.time(currentTime, orderBook.timestep, orderBook.csvline); 
+    }
 
     else if (userInput.at(0) == "step"){ 
         

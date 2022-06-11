@@ -59,19 +59,22 @@ std::string OrderBook::getEarlistTime(){
 
 std::string OrderBook::getNextTime(std::string timestamp){
 
+    // better tracker of where the current step is
     std::string next_timestamp = "";
-    
-    for (const OrderBookEntry& e: orders){
-        if (e.timestamp > timestamp){
-            next_timestamp = e.timestamp;
+    int snapshot = csvline - 1;
+    for (int i = snapshot; i < orders.size(); i++){
+        if (orders.at(i).timestamp > timestamp){
+            next_timestamp = orders.at(i).timestamp;
             ++timestep;
             break;
         }
-    }//end for
+        ++csvline;
+    }
 
     if (next_timestamp == ""){ // end of orders, loop back to start
-        next_timestamp = orders[0].timestamp;
+        next_timestamp = orders.at(0).timestamp;
         timestep = 1;
+        csvline = 1;
     }
     return next_timestamp;
 }

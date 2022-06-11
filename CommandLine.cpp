@@ -108,16 +108,17 @@ void CommandLine::predict(std::string& minmax, std::string& product, std::string
 }
 
 // prints current time frame
-void CommandLine::time(std::string& currentTime, int& timestep){
+void CommandLine::time(std::string& currentTime, int& timestep, int& csvline){
     
-    std::cout << "Current time: " << currentTime << ", Step: " << timestep << std::endl;
+    std::cout << "Current time: " << currentTime << ", Step: " << timestep 
+    << ", Line: "<< csvline << std::endl;
 }
 
 // move to next time step, total: 2147 steps in 20200601.csv
 void CommandLine::step(std::string& currentTime, int& timestep){
     
     std::cout << "Going to next time frame... \n";
-    std::this_thread::sleep_for (std::chrono::seconds(1));
+        std::this_thread::sleep_for (std::chrono::milliseconds(800));
     std::cout << "Moved to new: " << currentTime << ", Step: " << timestep << std::endl;
 }
 
@@ -130,9 +131,23 @@ void CommandLine::devi(std::string& product, std::string& type, std::pair<double
 
 // terminate program
 void CommandLine::exit(){
-    std::cout << "Terminating program..." << std::endl;
-    std::this_thread::sleep_for (std::chrono::seconds(1));
-    std::cout << "Thank you for using advisorBot. Goodbye!" << std::endl;
+    std::cout << "Self destruct countdown initiated...\n";
+    std::this_thread::sleep_for (std::chrono::milliseconds(800));
+    std::cout << "3...\n";
+    std::this_thread::sleep_for (std::chrono::milliseconds(1000));
+    std::cout << "2...\n";
+    std::this_thread::sleep_for (std::chrono::milliseconds(1000));
+    std::cout << "1...";
+    std::this_thread::sleep_for (std::chrono::milliseconds(800));
+    std::cout << "!";
+    std::this_thread::sleep_for (std::chrono::milliseconds(800));
+    std::cout << "\n\nd8888b.  .d88b.   .d88b.  .88b  d88. db \n";
+    std::cout << "88  `8D .8P  Y8. .8P  Y8. 88'YbdP`88 88 \n";
+    std::cout << "88oooY' 88    88 88    88 88  88  88 YP \n";
+    std::cout << "88~~~b. 88    88 88    88 88  88  88    \n";
+    std::cout << "88   8D `8b  d8' `8b  d8' 88  88  88 db \n";
+    std::cout << "Y8888P'  `Y88P'   `Y88P'  YP  YP  YP YP \n";
+    std::cout << "\nThank you for using advisorBot. Goodbye!" << std::endl;
 }
 
 /** TODO: refractor code: link MerkelMain -> CommandLine -> orderBook
