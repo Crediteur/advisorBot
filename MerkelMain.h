@@ -24,8 +24,8 @@ class MerkelMain{
         std::vector<std::string> userInput{};
 
         // move timeframe specified amount, returns true if successful
-        bool moveSteps(int steps);
-        bool moveSteps(std::string steps);
+        bool moveStep(int steps);
+        bool moveStep(std::string steps);
 
         // gets filtered orders by parameter, calculates the sum over each time step and then returns the average
         double avgAlgo(std::string product, OrderBookType type, int stepCount);
@@ -34,6 +34,9 @@ class MerkelMain{
         double predictAlgo(std::string maxMin, std::string product, OrderBookType type);
         double predictAlgo(std::string maxMin, std::string product, OrderBookType type, int stepCount);
         
+        // calculates standard deviation of current and last 10 frames
+        std::pair<double, double> standardDevi(std::string product, OrderBookType type);
+
         // commandLine logic and msgs
         CommandLine commandLine;
 
@@ -42,4 +45,7 @@ class MerkelMain{
 
         // point to CSV file through orderBook
         OrderBook orderBook{"20200601.csv"};
+
+        // flag to exit program
+        int loopStatus = 1;
 };
