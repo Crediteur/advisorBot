@@ -16,7 +16,7 @@ bool CommandLine::commandExists(std::string str){
     return std::find(commands.begin(), commands.end(),str) !=commands.end();
 }
 
-// user has partially entered help as first word in their input
+// user has partially entered "help" as first word in their input
 void CommandLine::help(){
     
         std::cout << "The avaliable <command>s are:\n";
@@ -24,15 +24,17 @@ void CommandLine::help(){
         std::cout << " prod\n";
         std::cout << " min <product> <bid/ask>\n";
         std::cout << " max <product> <bid/ask>\n";
-        std::cout << " avg <product> <bid/ask>\n";
-        std::cout << " predict <max/min> <product> <bid/ask>\n";
+        std::cout << " avg <product> <bid/ask> <steps>\n";
+        std::cout << " predict <max/min> <product> <bid/ask> *<steps>\n";
         std::cout << " time\n";
-        std::cout << " step" << std::endl;
+        std::cout << " step <steps>" << std::endl;
+        std::cout << " devi <product> <bid/ask>\n";
+        std::cout << " exit\n";
         //std::cout << "customCommand" << std::endl;
     //std::cout << "CommandLine::help" << std::endl;
 }
 
-// user has entered exactly help <cmd>
+// prints appropriate message checking help <command>
 void CommandLine::helpCMD(std::string command){
     if (command == "prod"){
         std::cout << "prod - list all avaliable products" << std::endl;
@@ -61,53 +63,54 @@ void CommandLine::helpCMD(std::string command){
         std::cout << "step - move to the next time frame(s)" << std::endl;
         std::cout << "      ie. step 10" << std::endl;
     }
+    else if (command == "devi"){
+        std::cout << "step - compute the standard deviation of the product bid/ask" << std::endl;
+        std::cout << "      ie. devi ETH/USDT ask" << std::endl;
+    }
+    else if (command == "exit"){
+        std::cout << "exit - stop execution and shut down the program" << std::endl;
+    }
     else{
         std::cout << "CommandLine::helpCMD: Error, no matching command" << std::endl;
     }
 }
 
-// list all product types
+// list all product types found parsing CSV
 void CommandLine::prod(std::vector<std::string>& products){
     for (std::string& s: products){
         std::cout << s << std::endl;
     }
-    //std::cout << "CommandLine::prod" << std::endl;
 }
 
-// returns minimum price order filtered by "min <product> <bid/ask>" of current time frame
+// prints minimum price order filtered by "min <product> <bid/ask>" of current time frame
 void CommandLine::min(std::string& product, std::string& type, std::vector<OrderBookEntry>& filteredOrders){
 
     std::cout << "Minimum " << product << " " << type << ": " << OrderBook::getLowPrice(filteredOrders) << std::endl;
-    //std::cout << "CommandLine::min" << std::endl;
 }
 
-// returns maximum price order filtered by "max <product> <bid/ask>" of current time frame
+// prints maximum price order filtered by "max <product> <bid/ask>" of current time frame
 void CommandLine::max(std::string& product, std::string& type, std::vector<OrderBookEntry>& filteredOrders){
 
     std::cout << "Maximum " << product << " " << type << ": " << OrderBook::getHighPrice(filteredOrders) << std::endl;
-    // std::cout << "CommandLine::max" << std::endl;
 }
 
+// avg is simple moving avg over timesteps ([F1+F2..+Fn] / n)
 void CommandLine::avg(std::string& product, std::string& type, std::string& steps, double& average){
-    // avg is simple moving avg over timesteps ([F1+F2..+Fn] / n)
-    // Common moving average lengths are 10, 20, 50, 100, and 200
+
     std::cout << "The average " << product << " " << type << 
     " price over the last " << steps << " steps was: " << average << std::endl;
-    //std::cout << "CommandLine::avg" << std::endl;
 }
+
+// predicts the max/min bid/ask for the next time step using the moving avg (10?)
 void CommandLine::predict(std::string& minmax, std::string& product, std::string& type, std::string& steps, double& average){
-    // predicts the max/min bid/ask for the next time step using the moving avg (10?)
-    // max/min will loook at the orders higher/lower than the average and predict the next max/min step
     std::cout << "The " << minmax << " price of " << product << " " << type << 
     " price over the last " << steps << " steps is predicted to be: " << average << std::endl;
-    std::cout << "CommandLine::predict" << std::endl;
 }
 
 // prints current time frame
 void CommandLine::time(std::string& currentTime, int& timestep){
     
     std::cout << "Current time: " << currentTime << ", Step: " << timestep << std::endl;
-    // std::cout << "CommandLine::time" << std::endl;
 }
 
 // move to next time step, total: 2147 steps in 20200601.csv
@@ -116,9 +119,18 @@ void CommandLine::step(std::string& currentTime, int& timestep){
     std::cout << "Going to next time frame... \n";
     std::this_thread::sleep_for (std::chrono::seconds(1));
     std::cout << "Moved to new: " << currentTime << ", Step: " << timestep << std::endl;
-    // std::cout << "CommandLine::step" << std::endl;
 }
 
-// void CommandLine::customCommand(){
-//     std::cout << "CommandLine::step" << std::endl;
-// }
+// prints product's standard deviation of current and last 10 steps 
+void CommandLine::devi(std::string& product, std::string& type, std::pair<double, double> deviationPair){
+    std::cout << "The standard deviation of " << product << " " << type << ":" << std::endl;
+    std::cout << "  over the current step is:   " << deviationPair.first << std::endl; 
+    std::cout << "  over the last 10 steps was: " << deviationPair.second << std::endl;
+}
+
+// terminate program
+void CommandLine::exit(){
+    std::cout << "Terminating program..." << std::endl;
+    std::this_thread::sleep_for (std::chrono::seconds(1));
+    std::cout << "Thank you for using advisorBot. Goodbye!" << std::endl;
+}

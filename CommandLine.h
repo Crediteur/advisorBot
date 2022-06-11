@@ -15,6 +15,7 @@ class CommandLine{
         // if string exists in commands, return true
         bool commandExists(std::string str);
 
+        // main print functions of advisorBot, redirected from MerkelMain
         void help();
         void helpCMD(std::string command);
         void prod(std::vector<std::string>& products);
@@ -24,7 +25,8 @@ class CommandLine{
         void predict(std::string& minmax, std::string& product, std::string& type, std::string& steps, double& average);
         void time(std::string& currentTime,  int& timestep);
         void step(std::string& currentTime, int& timestep);
-        //void customCommand();
+        void devi(std::string& product, std::string& type, std::pair<double, double> deviationPair);
+        void exit();
 
     private:
         
